@@ -17,22 +17,41 @@ import (
  */
 
 func minimumDistances(a []int) int {
-    var min int = -1
-    // Write your code here
-    for i := 0; i < len(a); i++ {
-        for j := i + 1; j < len(a); j++ {
-            if a[i] == a[j] {
-                fmt.Println(j, i)
-                temp := j - i
-                if min < 0 || temp < min {
-                    min = temp
-                }
+    min := -1
+    seen := make(map[int]int) // angka -> index pertama
+
+    for i, v := range a {
+        if prevIdx, ok := seen[v]; ok {
+            dist := i - prevIdx
+            if min == -1 || dist < min {
+                min = dist
             }
+        } else {
+            seen[v] = i
         }
     }
-
     return min
 }
+
+// ini fungsi yang untuk data kecil masih aman tapi kalau udah besar datanya ini akan lambat
+// solusi terbaiknya menggunakan hash seperti yang diatas
+// func minimumDistances(a []int) int {
+//     var min int = -1
+//     // Write your code here
+//     for i := 0; i < len(a); i++ {
+//         for j := i + 1; j < len(a); j++ {
+//             if a[i] == a[j] {
+//                 fmt.Println(j, i)
+//                 temp := j - i
+//                 if min < 0 || temp < min {
+//                     min = temp
+//                 }
+//             }
+//         }
+//     }
+
+//     return min
+// }
 
 func main() {
     reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
